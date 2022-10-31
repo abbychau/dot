@@ -1,4 +1,5 @@
 using System.Drawing.Drawing2D;
+using System.Windows.Forms;
 using Timer = System.Windows.Forms.Timer;
 
 namespace dot
@@ -15,6 +16,8 @@ namespace dot
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            //set windows always on top
+            this.TopMost = true;
             //hide the title bar
             this.FormBorderStyle = FormBorderStyle.None;
             
@@ -37,11 +40,12 @@ namespace dot
             timer.Tick += new EventHandler(Timer_Tick);
             timer.Start();
             g = this.CreateGraphics();
+
+
         }
         Graphics g;
         private void Timer_Tick(object sender, EventArgs e)
         {
-
             if (Cursor.Position.X == mouseX && Cursor.Position.Y == mouseY)
             {
                 return;
@@ -57,6 +61,7 @@ namespace dot
                 Console.WriteLine("Mouse is in the left hand side of the screen");
 
                 //draw a dot at the mouse position on the window
+                
                 g.Clear(Color.Black);
                 DrawCursor();
                     //g.FillEllipse(Brushes.Red, mouseX, mouseY, 4, 4);
@@ -72,11 +77,18 @@ namespace dot
         {
             
             
-            g.FillPath(new SolidBrush(Color.FromArgb(128, 255, 0, 0)), new GraphicsPath(
+            g.FillPath(new SolidBrush(Color.FromArgb(255, 128, 128, 128)), new GraphicsPath(
                 new Point[] {
                     new Point(mouseX, mouseY), 
-                    new Point(mouseX + 20, mouseY+10), 
-                    new Point(mouseX+10 , mouseY +20) 
+                    new Point(mouseX + 20, mouseY), 
+                    new Point(mouseX , mouseY +20) 
+                }, new byte[] { 0, 1, 1 }));
+            //draw a smaller triangle on top of the bigger one
+            g.FillPath(new SolidBrush(Color.FromArgb(255, 255, 255, 255)), new GraphicsPath(
+                new Point[] {
+                    new Point(mouseX, mouseY),
+                    new Point(mouseX + 5, mouseY+10),
+                    new Point(mouseX+ 10, mouseY +5)
                 }, new byte[] { 0, 1, 1 }));
         }
     }
